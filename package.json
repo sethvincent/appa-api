@@ -1,6 +1,6 @@
 {
   "name": "appa-api",
-  "version": "6.1.2",
+  "version": "7.0.0",
   "description": "Quickly create simple HTTP services.",
   "main": "index.js",
   "scripts": {
