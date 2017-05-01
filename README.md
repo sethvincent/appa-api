@@ -1,4 +1,4 @@
-# appa
+# appa-api
 
 Quickly create simple JSON API services.
 
@@ -7,16 +7,16 @@ Quickly create simple JSON API services.
 [![standard][standard-image]][standard-url]
 [![conduct][conduct]][conduct-url]
 
-[npm-image]: https://img.shields.io/npm/v/appa.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/appa
-[travis-image]: https://img.shields.io/travis/sethvincent/appa.svg?style=flat-square
-[travis-url]: https://travis-ci.org/sethvincent/appa
+[npm-image]: https://img.shields.io/npm/v/appa-api.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/appa-api 
+[travis-image]: https://img.shields.io/travis/sethvincent/appa-api.svg?style=flat-square
+[travis-url]: https://travis-ci.org/sethvincent/appa-api
 [standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
 [standard-url]: http://npm.im/standard
 [conduct]: https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square
 [conduct-url]: CONDUCT.md
 
-![appa](https://raw.githubusercontent.com/sethvincent/appa/master/appa.jpg)
+![appa](https://raw.githubusercontent.com/sethvincent/appa-api /master/appa-api.jpg)
 
 ## Install
 
@@ -30,8 +30,8 @@ npm install --save appa
 
 ```js
 var http = require('http')
-var app = require('appa')()
-var send = require('appa/send')
+var app = require('appa-api')()
+var send = require('appa-api/send')
 var log = app.log
 
 app.on('/', function (req, res, context) {
@@ -47,10 +47,10 @@ http.createServer(app).listen(3000, function () {
 
 Any uncaught errors that occur in a request handler will be caught and a `500 Internal server error` response will be sent.
 
-Send error responses using the `appa/error` module:
+Send error responses using the `appa-api/error` module:
 
 ```js
-var error = require('appa/error')
+var error = require('appa-api/error')
 
 module.exports = function (req, res, ctx) {
   return error(404, 'Not found').pipe(res)
@@ -60,8 +60,8 @@ module.exports = function (req, res, ctx) {
 Sending an error response does not automatically log the error, so to add that you can do something like:
 
 ```js
-var error = require('appa/error')
-var log = require('appa/log')()
+var error = require('appa-api/error')
+var log = require('appa-api/log')()
 
 module.exports = function (req, res, ctx) {
   log.error(req.method, '500', errorStack)
@@ -99,9 +99,8 @@ Read about the changes to this project in [CHANGELOG.md](CHANGELOG.md). The form
 
 ## Contact
 
-- **issues** – Please open issues in the [issues queue](https://github.com/sethvincent/appa/issues)
+- **issues** – Please open issues in the [issues queue](https://github.com/sethvincent/appa-api/issues)
 - **twitter** – Have a question? [@sethdvincent](https://twitter.com/sethdvincent)
-- **email** – Need in-depth support via paid contract? Send an email to sethvincent@gmail.com
 
 ## License
 

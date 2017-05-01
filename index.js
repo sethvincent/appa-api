@@ -5,6 +5,7 @@ var rawBody = require('raw-body')
 var createRouter = require('wayfarer')
 var isType = require('type-is')
 var httplogger = require('pino-http')
+var jsonParse = require('fast-json-parse')
 
 var createLogger = require('./log')
 var send = require('./send')
@@ -15,15 +16,15 @@ var error = require('./error')
 * @name createApp
 * @param {Object} config
 * @param {Object|Boolean} config.log – Set to `false` to disable logging. Set to an object with options that are passed to [pino](https://npmjs.com/pino) and [pino-http](https://npmjs.com/pino-http)
-* @param {Function} config.notFound – Function that handlers 404 routes. Provides `req`, `res`, and `ctx` arguments just like other appa route handlers. Default: a function that sends a `404` statusCode with the message `Not found`.
+* @param {Function} config.notFound – Function that handlers 404 routes. Provides `req`, `res`, and `ctx` arguments just like other appa route handlers. Default: a function that sends a `404` statusCode with the JSON `{ message: 'Not found' }`.
 * @returns {Function} `app`
 * @example
-* var appa = require('appa')
+* var appa = require('appa-api')
 *
 * var app = appa({
 *   log: { level: 'info' }, // or set to `false` to disable all logging
 *   notFound: function (req, res, ctx) {
-*     return app.error(404, 'Not Found').pipe(res)
+*     return app.error(res, 404, 'Not Found')
 *   }
 * })
 */
@@ -34,16 +35,18 @@ module.exports = function createApp (config) {
     ? { level: 'silent' }
     : config.log || { level: 'info' }
 
+  config.log.name = config.log.name || 'appa'
+
   var log = createLogger(config.log)
   var httplog = httplogger(config.log, config.log.stream)
   var router = app.router = createRouter('/404')
 
   // provide a 404 fallback
   on('/404', (config.notFound || notFound))
-  function notFound (req, res) { error('Not found').pipe(res) }
+  function notFound (req, res) { error(res, 'Not found') }
 
   // ignore favicon.ico requests
-  on('/favicon.ico', function (req, res) { send(200).pipe(res) })
+  on('/favicon.ico', function (req, res) { send(res, 200) })
 
   /**
   * The request, response handler that is passed to `http.createServer`, and the object that
@@ -53,7 +56,7 @@ module.exports = function createApp (config) {
   * @param {Object} res – the http response object
   * @example
   * var http = require('http')
-  * var appa = require('appa')
+  * var appa = require('appa-api')
   *
   * var app = appa()
   * var server = http.createServer(app)
@@ -91,19 +94,19 @@ module.exports = function createApp (config) {
 
     return router.on(pathname, function (params, req, res, ctx) {
       ctx.params = params
-      log.info(ctx)
 
       function respond (req, res, ctx) {
         try {
           return callback(req, res, ctx)
         } catch (e) {
-          return error(500, 'Internal server error', e).pipe(res)
+          log.error(e)
+          return error(res, 500, 'Internal server error', e)
         }
       }
 
       if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
         body(req, options, function (err, result) {
-          if (err) return error(err.status, err.type).pipe(res)
+          if (err) return error(res, err.status, err.type)
 
           if (isType(req, ['json']) && options.parseJSON) {
             ctx.body = parseJSON(res, result)
@@ -121,9 +124,10 @@ module.exports = function createApp (config) {
 
   function parseJSON (res, result) {
     try {
-      return JSON.parse(result)
+      return jsonParse(result)
     } catch (err) {
-      return error(400, 'Invalid JSON').pipe(res)
+      log.error(e)
+      return error(res, 400, 'Invalid JSON')
     }
   }
 
@@ -139,10 +143,10 @@ module.exports = function createApp (config) {
   * @param {Number} statusCode – the status code of the response, default is 200
   * @param {Object} data – the data that will be stringified into JSON
   * @example
-  * var send = require('appa/send')
+  * var send = require('appa-api/send')
   *
   * app.on('/', function (req, res, ctx) {
-  *   send({ message: 'hi' }).pipe(res)
+  *   send(res, { message: 'hi' })
   * })
   */
   app.send = send
@@ -154,10 +158,10 @@ module.exports = function createApp (config) {
   * @param {String} message – the message that will be stringified into JSON
   * @param {Object} data – additional data about the error to send in the response
   * @example
-  * var error = require('appa/error')
+  * var error = require('appa-api/error')
   *
   * app.on('/', function (req, res, ctx) {
-  *   error(404, 'Resource not found').pipe(res)
+  *   error(res, 404, 'Resource not found')
   * })
   */
   app.error = error

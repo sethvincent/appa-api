@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 > Note: unreleased changes are listed here
 
+## 7.0.0 - 2017-04-30
+
+## Changed
+- renamed this project from appa to appa-api
+- now uses the [send-response](https://github.com/sethvincent/send-response) module
+- as a result, switched back to `send(res, data)` signature instead of `send(data).pipe(res)`
+
 ## 6.1.2 - 2017-02-25
 
 ## Fixed
