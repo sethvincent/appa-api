@@ -1,7 +1,7 @@
 var test = require('tape')
 var http = require('http')
 var request = require('request')
-var fromString = require('from2-string')
+var intoStream = require('into-stream')
 
 var createApp = require('../index')
 var send = require('../send')
@@ -27,7 +27,7 @@ test('create a route', function (t) {
     t.ok(req)
     t.ok(res)
     t.ok(context)
-    send({ hello: 'hi' }).pipe(res)
+    send(res, { hello: 'hi' })
   })
 
   var server = createServer(app).listen(3131, function () {
@@ -45,7 +45,7 @@ test('querystring is parsed', function (t) {
   var app = createApp({ log: { level: 'silent' } })
 
   app.on('/', function (req, res, context) {
-    send(context.query).pipe(res)
+    send(res, context.query)
   })
 
   var server = createServer(app).listen(3131, function () {
@@ -59,15 +59,13 @@ test('querystring is parsed', function (t) {
   })
 })
 
-test('pipe a stream', function (t) {
-  t.plan(5)
-  var app = createApp({ log: { level: 'silent' } })
+test('send a stream', function (t) {
+  t.plan(4)
+  var app = createApp({ log: false })
 
   app.on('/', function (req, res, context) {
-    var stream = fromString(JSON.stringify(context.query))
-    app.pipe(stream, res, function (err) {
-      t.notOk(err)
-    })
+    var stream = intoStream.obj(context.query)
+    send(res, stream)
   })
 
   var server = createServer(app).listen(3131, function () {
@@ -83,13 +81,13 @@ test('pipe a stream', function (t) {
 
 test('receive params', function (t) {
   t.plan(7)
-  var app = createApp({ log: { level: 'silent' } })
+  var app = createApp({ log: false })
 
   app.on('/list/:listkey/item/:itemkey', function (req, res, ctx) {
     t.ok(ctx.params)
     t.ok(ctx.params.listkey)
     t.ok(ctx.params.itemkey)
-    send(ctx.params).pipe(res)
+    send(res, ctx.params)
   })
 
   var server = createServer(app).listen(3131, function () {

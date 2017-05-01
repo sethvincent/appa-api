@@ -98,9 +98,9 @@ module.exports = function createApp (config) {
       function respond (req, res, ctx) {
         try {
           return callback(req, res, ctx)
-        } catch (e) {
-          log.error(e)
-          return error(res, 500, 'Internal server error', e)
+        } catch (err) {
+          log.error(err)
+          return error(res, 500, 'Internal server error', err)
         }
       }
 
@@ -126,7 +126,7 @@ module.exports = function createApp (config) {
     try {
       return jsonParse(result)
     } catch (err) {
-      log.error(e)
+      log.error(err)
       return error(res, 400, 'Invalid JSON')
     }
   }
