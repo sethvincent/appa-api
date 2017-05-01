@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sethvincent/appa-api .git"
+    "url": "git+https://github.com/sethvincent/appa-api.git"
   },
-  "author": "",
+  "author": "sethvincent",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sethvincent/appa-api /issues"
+    "url": "https://github.com/sethvincent/appa-api/issues"
   },
-  "homepage": "https://github.com/sethvincent/appa-api #readme",
+  "homepage": "https://github.com/sethvincent/appa-api#readme",
   "dependencies": {
     "JSONStream": "^1.3.1",
     "fast-json-parse": "^1.0.2",
