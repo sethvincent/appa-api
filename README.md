@@ -1,6 +1,6 @@
 # appa-api
 
-Quickly create simple JSON API services.
+Quickly create simple HTTP services.
 
 [![npm][npm-image]][npm-url]
 [![travis][travis-image]][travis-url]
@@ -16,7 +16,7 @@ Quickly create simple JSON API services.
 [conduct]: https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square
 [conduct-url]: CONDUCT.md
 
-![appa](https://raw.githubusercontent.com/sethvincent/appa-api /master/appa-api.jpg)
+![appa](https://raw.githubusercontent.com/sethvincent/appa-api/master/appa-api.jpg)
 
 ## Install
 
