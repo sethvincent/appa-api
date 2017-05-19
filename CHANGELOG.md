@@ -1,4 +1,4 @@
-# appa change log
+# appa-api change log
 
 All notable changes to this project will be documented in this file.
 
