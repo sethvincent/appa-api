@@ -1,4 +1,4 @@
-## How to contribute to appa-api
+## Contributing to appa-api
 
 ### Prerequisites:
 
