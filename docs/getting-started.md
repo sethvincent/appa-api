@@ -1,1 +1,1 @@
-# Getting started with appa
+# Getting started with appa-api
