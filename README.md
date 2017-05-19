@@ -35,7 +35,7 @@ var send = require('appa-api/send')
 var log = app.log
 
 app.on('/', function (req, res, context) {
-  send({ message: 'oh hey friends' }).pipe(res)
+  send(res, { message: 'oh hey friends' })
 })
 
 http.createServer(app).listen(3000, function () {
@@ -53,7 +53,7 @@ Send error responses using the `appa-api/error` module:
 var error = require('appa-api/error')
 
 module.exports = function (req, res, ctx) {
-  return error(404, 'Not found').pipe(res)
+  return error(res, 404, 'Not found')
 }
 ```
 
@@ -65,7 +65,7 @@ var log = require('appa-api/log')()
 
 module.exports = function (req, res, ctx) {
   log.error(req.method, '500', errorStack)
-  return error(500, 'Internal server error').pipe(res)
+  return error(res, 500, 'Internal server error')
 }
 ```
 
