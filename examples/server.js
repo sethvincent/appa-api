@@ -6,12 +6,12 @@ var log = app.log
 
 app.on('/', function (req, res, ctx) {
   if (req.method === 'POST') {
-    return send(200, ctx.body).pipe(res)
+    return send(res, 200, ctx.body)
   } else if (req.method === 'GET') {
-    return send(200, { message: 'oh hey friends' }).pipe(res)
+    return send(res, 200, { message: 'oh hey friends' })
   }
 
-  return error(400, 'Method not allowed').pipe(res)
+  return error(res, 400, 'Method not allowed')
 })
 
 http.createServer(app).listen(3000, function () {
