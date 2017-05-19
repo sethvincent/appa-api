@@ -19,17 +19,17 @@ Create the application. Returns the `app` function that can be passed into `http
 
 -   `config` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `config.log` **([Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean))** – Set to `false` to disable logging. Set to an object with options that are passed to [pino](https://npmjs.com/pino) and [pino-http](https://npmjs.com/pino-http)
-    -   `config.notFound` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** – Function that handlers 404 routes. Provides `req`, `res`, and `ctx` arguments just like other appa route handlers. Default: a function that sends a `404` statusCode with the message `Not found`.
+    -   `config.notFound` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** – Function that handlers 404 routes. Provides `req`, `res`, and `ctx` arguments just like other appa route handlers. Default: a function that sends a `404` statusCode with the JSON `{ message: 'Not found' }`.
 
 **Examples**
 
 ```javascript
-var appa = require('appa')
+var appa = require('appa-api')
 
 var app = appa({
   log: { level: 'info' }, // or set to `false` to disable all logging
   notFound: function (req, res, ctx) {
-    return app.error(404, 'Not Found').pipe(res)
+    return app.error(res, 404, 'Not Found')
   }
 })
 ```
@@ -50,7 +50,7 @@ provides methods for your app.
 
 ```javascript
 var http = require('http')
-var appa = require('appa')
+var appa = require('appa-api')
 
 var app = appa()
 var server = http.createServer(app)
@@ -87,10 +87,10 @@ Send a JSON object as a response
 **Examples**
 
 ```javascript
-var send = require('appa/send')
+var send = require('appa-api/send')
 
 app.on('/', function (req, res, ctx) {
-  send({ message: 'hi' }).pipe(res)
+  send(res, { message: 'hi' })
 })
 ```
 
@@ -107,10 +107,10 @@ Send a JSON error response
 **Examples**
 
 ```javascript
-var error = require('appa/error')
+var error = require('appa-api/error')
 
 app.on('/', function (req, res, ctx) {
-  error(404, 'Resource not found').pipe(res)
+  error(res, 404, 'Resource not found')
 })
 ```
 

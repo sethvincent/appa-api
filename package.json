@@ -24,18 +24,18 @@
   "dependencies": {
     "JSONStream": "^1.3.1",
     "fast-json-parse": "^1.0.2",
-    "pino": "^4.5.0",
-    "pino-http": "^2.6.0",
+    "pino": "^4.5.2",
+    "pino-http": "^2.6.1",
     "pump": "^1.0.2",
     "qs": "^6.4.0",
     "raw-body": "^2.2.0",
     "send-response": "^1.0.0",
     "type-is": "^1.6.15",
-    "wayfarer": "^6.5.3"
+    "wayfarer": "^6.6.0"
   },
   "devDependencies": {
     "dependency-check": "^2.8.0",
-    "documentation": "^4.0.0-rc.0",
+    "documentation": "^4.0.0-rc.1",
     "from2-string": "^1.1.0",
     "into-stream": "^3.1.0",
     "request": "^2.81.0",
