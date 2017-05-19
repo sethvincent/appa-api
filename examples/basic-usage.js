@@ -4,7 +4,7 @@ var send = require('../send')
 var log = app.log
 
 app.on('/', function (req, res, ctx) {
-  send(200, { message: 'oh hey friends' }).pipe(res)
+  send(res, 200, { message: 'oh hey friends' })
 })
 
 http.createServer(app).listen(3000, function () {
