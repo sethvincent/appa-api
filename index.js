@@ -86,9 +86,9 @@ module.exports = function createApp (config) {
       options = {}
     }
 
-    assert.equal(typeof pathname, 'string', 'appa: pathname is required and must be a string')
-    assert.equal(typeof options, 'object', 'appa: options must be an object')
-    assert.equal(typeof callback, 'function', 'appa: callback function is required')
+    assert(typeof pathname === 'string', 'appa: pathname is required and must be a string')
+    assert(typeof options === 'object', 'appa: options must be an object')
+    assert(typeof callback === 'function', 'appa: callback function is required')
 
     options.parseJSON = options.parseJSON === false ? options.parseJSON : true
 
@@ -109,7 +109,13 @@ module.exports = function createApp (config) {
           if (err) return error(res, err.status, err.type)
 
           if (isType(req, ['json']) && options.parseJSON) {
-            ctx.body = parseJSON(res, result)
+            result = parseJSON(res, result)
+
+            if (result.err) {
+              return error(res, 400, 'Malformed JSON')
+            } else {
+              ctx.body = result.value
+            }
           } else {
             ctx.body = result
           }
